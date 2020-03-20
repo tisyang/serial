@@ -7,6 +7,52 @@
 #include <errno.h>
 #endif
 
+struct BaudratePair {
+    int      number;
+    BAUDRATE br;
+};
+
+#define BAUDRATE_PAIR(n)    { n, BAUDRATE_LITERAL(n) }
+
+static const struct BaudratePair BAUDRATEPAIRS[] = {
+    BAUDRATE_PAIR(300),
+    BAUDRATE_PAIR(600),
+    BAUDRATE_PAIR(1200),
+    BAUDRATE_PAIR(2400),
+    BAUDRATE_PAIR(4800),
+    BAUDRATE_PAIR(9600),
+    BAUDRATE_PAIR(19200),
+    BAUDRATE_PAIR(38400),
+    BAUDRATE_PAIR(57600),
+    BAUDRATE_PAIR(115200),
+    BAUDRATE_PAIR(230400),
+    BAUDRATE_PAIR(460800),
+    BAUDRATE_PAIR(0),
+};
+
+int     serial_num2baudrate(int num, BAUDRATE *br)
+{
+    const struct BaudratePair *pair = BAUDRATEPAIRS;
+    for (; pair->number; pair++) {
+        if (num == pair->number) {
+            *br = pair->br;
+            return 0;
+        }
+    }
+    return -1;
+}
+
+int     serial_baudrate2num(BAUDRATE br, int *num)
+{
+    const struct BaudratePair *pair = BAUDRATEPAIRS;
+    for (; pair->number; pair++) {
+        if (br == pair->br) {
+            *num = pair->number;
+            return 0;
+        }
+    }
+    return -1;
+}
 
 SERIAL  serial_open(const char *dev, BAUDRATE br)
 {

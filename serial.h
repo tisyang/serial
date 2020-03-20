@@ -47,6 +47,14 @@
 #define SERIAL_B230400    BAUDRATE_LITERAL(230400)
 #define SERIAL_B460800    BAUDRATE_LITERAL(460800)
 
+// get BAUDRATE from number.
+// return 0 means OK, return -1 means error(NOT VALID BAUDRATE NUMBER).
+SERIAL_API  int     serial_num2baudrate(int num, BAUDRATE *br);
+
+// get number from BAUDRATE
+// return 0 means OK, return -1 means error(NOT VALID BAUDRATE).
+SERIAL_API  int     serial_baudrate2num(BAUDRATE br, int *num);
+
 // open a serial port by dev name and baudrate.
 // return valid SERIAL if success, otherwise return INVALID_SERIAL.
 // BAUDRATE should use SERIAL_B???? macros.
