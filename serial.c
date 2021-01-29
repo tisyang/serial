@@ -27,6 +27,7 @@ static const struct BaudratePair BAUDRATEPAIRS[] = {
     BAUDRATE_PAIR(115200),
     BAUDRATE_PAIR(230400),
     BAUDRATE_PAIR(460800),
+    BAUDRATE_PAIR(921600),
     BAUDRATE_PAIR(0),
 };
 
@@ -139,7 +140,7 @@ int serial_read(SERIAL sp, void *buf, size_t sz)
         }
         return -1;
     } else {
-        return rv;
+        return rv ? rv : -1;
     }
 #endif
 }
