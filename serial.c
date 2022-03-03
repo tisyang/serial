@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <linux/serial.h>
+#include <sys/ioctl.h>
 #endif
 
 struct BaudratePair {
@@ -119,6 +121,11 @@ SERIAL  serial_open(const char *dev, BAUDRATE br)
     ios.c_cflag &= ~CRTSCTS;
     tcsetattr(serial, TCSANOW, &ios);
     tcflush(serial, TCIOFLUSH);
+    // low latency
+    struct serial_struct kernel_serial_settings;
+    ioctl(serial, TIOCGSERIAL, &kernel_serial_settings);
+    kernel_serial_settings.flags |= ASYNC_LOW_LATENCY;
+    ioctl(serial, TIOCSSERIAL, &kernel_serial_settings);
     return serial;
 #endif
 }
